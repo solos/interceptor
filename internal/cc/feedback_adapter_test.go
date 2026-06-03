@@ -224,7 +224,9 @@ func TestUnpackRunLengthChunk(t *testing.T) {
 				assert.NoError(t, fa.OnSent(time.Time{}, h, 0, attributes))
 			}
 
-			n, refTime, acks, err := fa.unpackRunLengthChunk(tc.start, time.Time{}, &tc.chunk, tc.deltas)
+			var result []Acknowledgment
+			result, n, refTime, err := fa.unpackRunLengthChunk(result, tc.start, time.Time{}, &tc.chunk, tc.deltas)
+			acks := result
 			assert.NoError(t, err)
 			assert.Len(t, acks, len(tc.acks))
 			assert.Equal(t, tc.n, n)
@@ -407,7 +409,9 @@ func TestUnpackStatusVectorChunk(t *testing.T) {
 				assert.NoError(t, fa.OnSent(time.Time{}, h, 0, attributes))
 			}
 
-			n, refTime, acks, err := fa.unpackStatusVectorChunk(tc.start, time.Time{}, &tc.chunk, tc.deltas)
+			var result []Acknowledgment
+			result, n, refTime, err := fa.unpackStatusVectorChunk(result, tc.start, time.Time{}, &tc.chunk, tc.deltas)
+			acks := result
 			assert.NoError(t, err)
 			assert.Len(t, acks, len(tc.acks))
 			assert.Equal(t, tc.n, n)
